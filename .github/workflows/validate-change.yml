@@ -1,0 +1,26 @@
+name: Validate Changes
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: 8
+        distribution: zulu
+        cache: maven
+
+    - name: Run Tests
+      run: mvn -B clean install --file pom.xml
