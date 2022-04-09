@@ -6,7 +6,7 @@
 
     <groupId>com.github.alexey-anufriev</groupId>
     <artifactId>advanced-enforcer-rules-root</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>advanced-enforcer-rules-root</name>
     <description>Set of advanced rules for maven-enforcer-plugin</description>
