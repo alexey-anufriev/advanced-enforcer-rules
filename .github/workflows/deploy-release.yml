@@ -54,6 +54,8 @@ jobs:
 
     - name: Prepare Artifact
       run: mvn -B clean install -P publish --file pom.xml
+      env:
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
     - name: Publish to Maven Central
       run: mvn -B deploy -DskipTests=true -P publish --file pom.xml
