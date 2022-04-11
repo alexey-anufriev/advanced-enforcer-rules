@@ -45,6 +45,27 @@ public class AdvancedDependencyConvergenceTest {
     }
 
     @Test
+    public void shouldFailWhenDuplicatesInDefaultScopes() throws IOException, VerificationException {
+        File testDir = ResourceExtractor.simpleExtractResources(getClass(), "/error-having-duplicates-in-default-scopes");
+
+        Verifier verifier = new Verifier(testDir.getAbsolutePath());
+        verifier.addCliOption("-Drules-version=" + this.properties.getProperty("version"));
+        verifier.setAutoclean(false);
+
+        try {
+            verifier.executeGoal("validate");
+            Assert.fail("Build failure expected");
+        }
+        catch (Exception e) {
+            // expected error
+        }
+
+        verifier.verifyTextInLog("[WARNING] Dependency convergence error for 'org.slf4j:slf4j-api:jar:1.7.32:compile'");
+        verifier.verifyTextInLog("[WARNING] Dependency convergence error for 'com.fasterxml.jackson.core:jackson-databind:jar:2.12.6.1:compile'");
+        verifier.verifyTextInLog("[INFO] BUILD FAILURE");
+    }
+
+    @Test
     public void shouldNotFailWhenNoDuplicates() throws IOException, VerificationException {
         File testDir = ResourceExtractor.simpleExtractResources(getClass(), "/no-error-having-no-duplicates");
 
@@ -72,6 +93,20 @@ public class AdvancedDependencyConvergenceTest {
         verifier.verifyTextInLog("[INFO] AdvancedDependencyConvergence rule is running in reporting-only mode");
         verifier.verifyTextInLog("[WARNING] Dependency convergence error for 'org.slf4j:slf4j-api:jar:1.7.32:compile'");
         verifier.verifyTextInLog("[WARNING] Dependency convergence error for 'com.fasterxml.jackson.core:jackson-databind:jar:2.12.6.1:compile'");
+        verifier.verifyTextInLog("[INFO] BUILD SUCCESS");
+    }
+
+    @Test
+    public void shouldNotFailWhenDuplicatesInSuppressedScope() throws IOException, VerificationException {
+        File testDir = ResourceExtractor.simpleExtractResources(getClass(), "/no-error-having-duplicates-in-test-scope");
+
+        Verifier verifier = new Verifier(testDir.getAbsolutePath());
+        verifier.addCliOption("-Drules-version=" + this.properties.getProperty("version"));
+        verifier.setAutoclean(false);
+
+        verifier.executeGoal("validate");
+
+        verifier.verifyErrorFreeLog();
         verifier.verifyTextInLog("[INFO] BUILD SUCCESS");
     }
 

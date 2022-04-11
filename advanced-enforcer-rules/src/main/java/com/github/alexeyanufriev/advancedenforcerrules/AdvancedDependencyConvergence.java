@@ -23,6 +23,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +36,9 @@ public class AdvancedDependencyConvergence implements EnforcerRule {
 
     @Setter
     private List<String> excludes = new ArrayList<>(0);
+
+    @Setter
+    private List<String> scopes = Arrays.asList("compile", "provided", "runtime", "test");
 
     @Setter
     private boolean uniqueVersions = false;
@@ -91,7 +95,8 @@ public class AdvancedDependencyConvergence implements EnforcerRule {
     private ArtifactFilter getArtifactFilter() {
         return artifact -> {
             try {
-                return ("compile".equalsIgnoreCase(artifact.getScope()) || "runtime".equalsIgnoreCase(artifact.getScope()))
+                return
+                        this.scopes.stream().anyMatch(scope -> scope.equalsIgnoreCase(artifact.getScope()))
                         && !new ArtifactMatcher(this.excludes, Collections.emptyList()).match(artifact)
                         && !artifact.isOptional();
             }

@@ -39,6 +39,12 @@
                         <configuration>
                             <rules>
                                 <advancedDependencyConvergence implementation="com.github.alexeyanufriev.advancedenforcerrules.AdvancedDependencyConvergence">
+                                    <scopes>
+                                        <scope>compile</scope>
+                                        <scope>runtime</scope>
+                                        <scope>provided</scope>
+                                        <scope>test</scope>
+                                    </scopes>
                                     <fail>false</fail>
                                     <excludes>
                                         <!-- <exclude>org.slf4j:slf4j-api:*</exclude> -->
