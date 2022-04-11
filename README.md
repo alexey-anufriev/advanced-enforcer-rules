@@ -35,6 +35,12 @@ Rule that is similar to `DependencyConvergence` with extra configuration:
                         <rules>
                             <advancedDependencyConvergence implementation="com.github.alexeyanufriev.advancedenforcerrules.AdvancedDependencyConvergence">
                                 <fail>false</fail>
+                                <scopes>
+                                    <scope>compile</scope>
+                                    <scope>runtime</scope>
+                                    <scope>provided</scope>
+                                    <!-- <scope>test</scope> -->
+                                </scopes>
                                 <excludes>
                                     <exclude>org.slf4j:slf4j-api:*</exclude>
                                     <exclude>com.fasterxml.jackson.core:jackson-databind:*</exclude>
